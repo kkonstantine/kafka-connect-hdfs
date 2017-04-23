@@ -50,7 +50,6 @@ public class AvroFormat implements Format,
   @Override
   public HiveUtil getHiveUtil(
       HdfsSinkConnectorConfig config,
-      AvroData avroData,
       HiveMetaStore hiveMetaStore
   ) {
     return (HiveUtil) getHiveFactory().createHiveUtil(config, hiveMetaStore);
@@ -58,6 +57,6 @@ public class AvroFormat implements Format,
 
   @Override
   public HiveFactory getHiveFactory() {
-    return new AvroHiveFactory();
+    return new AvroHiveFactory(avroData);
   }
 }

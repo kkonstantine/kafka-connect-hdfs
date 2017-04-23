@@ -51,7 +51,6 @@ public class ParquetFormat implements Format,
   @Override
   public HiveUtil getHiveUtil(
       HdfsSinkConnectorConfig config,
-      AvroData avroData,
       HiveMetaStore hiveMetaStore
   ) {
     return (HiveUtil) getHiveFactory().createHiveUtil(config, hiveMetaStore);

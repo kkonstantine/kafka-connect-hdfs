@@ -16,21 +16,24 @@
 
 package io.confluent.connect.hdfs.parquet;
 
+import org.apache.kafka.common.config.AbstractConfig;
+
 import io.confluent.connect.avro.AvroData;
 import io.confluent.connect.hdfs.HdfsSinkConnectorConfig;
 import io.confluent.connect.storage.hive.HiveFactory;
 import io.confluent.connect.hdfs.hive.HiveMetaStore;
 import io.confluent.connect.storage.hive.HiveUtil;
 
-public class ParquetHiveFactory implements HiveFactory<HdfsSinkConnectorConfig, AvroData> {
+public class ParquetHiveFactory implements HiveFactory {
   @Override
   public HiveUtil createHiveUtil(
-      HdfsSinkConnectorConfig config,
+      AbstractConfig config,
       io.confluent.connect.storage.hive.HiveMetaStore hiveMetaStore
   ) {
-    return createHiveUtil(config, hiveMetaStore);
+    return createHiveUtil((HdfsSinkConnectorConfig) config, (HiveMetaStore) hiveMetaStore);
   }
 
+  @Deprecated
   public HiveUtil createHiveUtil(HdfsSinkConnectorConfig config, HiveMetaStore hiveMetaStore) {
     return new ParquetHiveUtil(config, hiveMetaStore);
   }
