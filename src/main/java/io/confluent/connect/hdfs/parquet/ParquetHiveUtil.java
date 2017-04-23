@@ -33,12 +33,17 @@ import io.confluent.connect.storage.hive.HiveSchemaConverter;
 
 public class ParquetHiveUtil extends HiveUtil {
 
-  public ParquetHiveUtil(HdfsSinkConnectorConfig connectorConfig, AvroData avroData, HiveMetaStore hiveMetaStore) {
-    super(connectorConfig, avroData, hiveMetaStore);
+  public ParquetHiveUtil(HdfsSinkConnectorConfig connectorConfig, HiveMetaStore hiveMetaStore) {
+    super(connectorConfig, hiveMetaStore);
   }
 
   @Override
-  public void createTable(String database, String tableName, Schema schema, Partitioner partitioner) throws HiveMetaStoreException {
+  public void createTable(
+      String database,
+      String tableName,
+      Schema schema,
+      Partitioner partitioner
+  ) throws HiveMetaStoreException {
     Table table = constructParquetTable(database, tableName, schema, partitioner);
     hiveMetaStore.createTable(table);
   }
@@ -51,7 +56,12 @@ public class ParquetHiveUtil extends HiveUtil {
     hiveMetaStore.alterTable(table);
   }
 
-  private Table constructParquetTable(String database, String tableName, Schema schema, Partitioner partitioner) throws HiveMetaStoreException {
+  private Table constructParquetTable(
+      String database,
+      String tableName,
+      Schema schema,
+      Partitioner partitioner
+  ) throws HiveMetaStoreException {
     Table table = newTable(database, tableName);
     table.setTableType(TableType.EXTERNAL_TABLE);
     table.getParameters().put("EXTERNAL", "TRUE");

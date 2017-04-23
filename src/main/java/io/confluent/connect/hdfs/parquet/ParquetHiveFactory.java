@@ -22,14 +22,16 @@ import io.confluent.connect.storage.hive.HiveFactory;
 import io.confluent.connect.hdfs.hive.HiveMetaStore;
 import io.confluent.connect.storage.hive.HiveUtil;
 
-public class ParquetHiveFactory implements HiveFactory<HdfsSinkConnectorConfig, AvroData>  {
+public class ParquetHiveFactory implements HiveFactory<HdfsSinkConnectorConfig, AvroData> {
   @Override
-  public HiveUtil createHiveUtil(HdfsSinkConnectorConfig config, AvroData avroData,
-                                 io.confluent.connect.storage.hive.HiveMetaStore hiveMetaStore) {
-    return createHiveUtil(config, avroData, (HiveMetaStore) hiveMetaStore);
+  public HiveUtil createHiveUtil(
+      HdfsSinkConnectorConfig config,
+      io.confluent.connect.storage.hive.HiveMetaStore hiveMetaStore
+  ) {
+    return createHiveUtil(config, hiveMetaStore);
   }
 
-  public HiveUtil createHiveUtil(HdfsSinkConnectorConfig config, AvroData avroData, HiveMetaStore hiveMetaStore) {
-    return new ParquetHiveUtil(config, avroData, hiveMetaStore);
+  public HiveUtil createHiveUtil(HdfsSinkConnectorConfig config, HiveMetaStore hiveMetaStore) {
+    return new ParquetHiveUtil(config, hiveMetaStore);
   }
 }

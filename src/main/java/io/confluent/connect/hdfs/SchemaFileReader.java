@@ -14,16 +14,16 @@
 
 package io.confluent.connect.hdfs;
 
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.kafka.connect.data.Schema;
 
 import java.util.Collection;
 
 @Deprecated
-public interface SchemaFileReader extends io.confluent.connect.storage.format.SchemaFileReader<Configuration, Path> {
+public interface SchemaFileReader
+    extends io.confluent.connect.storage.format.SchemaFileReader<HdfsSinkConnectorConfig, Path> {
   @Override
-  Schema getSchema(Configuration conf, Path path);
-  @Override
-  Collection<Object> readData(Configuration conf, Path path);
+  Schema getSchema(HdfsSinkConnectorConfig conf, Path path);
+
+  Collection<Object> readData(HdfsSinkConnectorConfig conf, Path path);
 }

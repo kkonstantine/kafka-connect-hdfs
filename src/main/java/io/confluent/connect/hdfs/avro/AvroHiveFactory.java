@@ -22,7 +22,7 @@ import io.confluent.connect.hdfs.hive.HiveMetaStore;
 import io.confluent.connect.hdfs.hive.HiveUtil;
 import io.confluent.connect.storage.hive.HiveFactory;
 
-public class AvroHiveFactory implements HiveFactory<HdfsSinkConnectorConfig, AvroData>  {
+public class AvroHiveFactory implements HiveFactory  {
   @Override
   public io.confluent.connect.storage.hive.HiveUtil createHiveUtil(HdfsSinkConnectorConfig config, AvroData avroData,
                                  io.confluent.connect.storage.hive.HiveMetaStore hiveMetaStore) {
