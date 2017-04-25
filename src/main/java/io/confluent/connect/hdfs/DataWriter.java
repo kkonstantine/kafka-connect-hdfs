@@ -180,8 +180,8 @@ public class DataWriter {
       createDir(logsDir);
 
       format = getFormat();
-      writerProvider = (RecordWriterProvider) format.getRecordWriterProvider();
-      schemaFileReader = (SchemaFileReader) format.getSchemaFileReader();
+      writerProvider = format.getRecordWriterProvider();
+      schemaFileReader = format.getSchemaFileReader();
 
       partitioner = createPartitioner(connectorConfig);
 
