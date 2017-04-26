@@ -69,22 +69,22 @@ public class TopicPartitionWriterTest extends TestWithMiniDFSCluster {
     super.setUp();
 
     @SuppressWarnings("unchecked")
-    Format format = ((Class<Format>) Class.forName(
-        connectorConfig.getString(HdfsSinkConnectorConfig.FORMAT_CLASS_CONFIG))
-    ).newInstance();
-    writerProvider = format.getRecordWriterProvider();
-    schemaFileReader = format.getSchemaFileReader(avroData);
-    extension = writerProvider.getExtension();
-    @SuppressWarnings("unchecked")
-    Class<? extends HdfsStorage> storageClass = (Class<? extends HdfsStorage>) Class.forName(
-        connectorConfig.getString(StorageCommonConfig.STORAGE_CLASS_CONFIG)
-    );
+    Class<? extends HdfsStorage> storageClass = (Class<? extends HdfsStorage>)
+        connectorConfig.getClass(StorageCommonConfig.STORAGE_CLASS_CONFIG);
     storage = StorageFactory.createStorage(
         storageClass,
         HdfsSinkConnectorConfig.class,
         connectorConfig,
         url
     );
+    @SuppressWarnings("unchecked")
+    Class<Format> formatClass = (Class<Format>) connectorConfig.getClass(
+        HdfsSinkConnectorConfig.FORMAT_CLASS_CONFIG
+    );
+    Format format = formatClass.getConstructor(HdfsStorage.class).newInstance(storage);
+    writerProvider = format.getRecordWriterProvider();
+    schemaFileReader = format.getSchemaFileReader(avroData);
+    extension = writerProvider.getExtension();
     createTopicDir(url, topicsDir, TOPIC);
     createLogsDir(url, logsDir);
   }
@@ -132,6 +132,7 @@ public class TopicPartitionWriterTest extends TestWithMiniDFSCluster {
 
   @Test
   public void testWriteRecordFieldPartitioner() throws Exception {
+    setUp();
     Partitioner partitioner = new FieldPartitioner();
     partitioner.configure(parsedConfig);
 
@@ -184,6 +185,7 @@ public class TopicPartitionWriterTest extends TestWithMiniDFSCluster {
 
   @Test
   public void testWriteRecordTimeBasedPartition() throws Exception {
+    setUp();
     Partitioner partitioner = new TimeBasedPartitioner();
     parsedConfig.put(PartitionerConfig.SCHEMA_GENERATOR_CLASS_CONFIG, TimeBasedSchemaGenerator.class);
     partitioner.configure(parsedConfig);
